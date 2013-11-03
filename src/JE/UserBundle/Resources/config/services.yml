@@ -1,0 +1,14 @@
+parameters:
+#    je_user.example.class: JE\UserBundle\Example
+
+services:
+    form.type.roles:
+        class: JE\UserBundle\Form\Type\RolesType
+        tags:
+            - { name: form.type, alias: roles }
+
+    je.twig.user_helper:
+        class: JE\UserBundle\Twig\UserHelper
+        arguments: [@router]
+        tags:
+            - { name: twig.extension }

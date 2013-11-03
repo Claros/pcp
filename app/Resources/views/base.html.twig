@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block page_title %}PCP{% endblock %}</title>
+        {% block stylesheets %}
+            {% stylesheets
+                'css/smoothness/jquery-ui-1.10.3.custom.min.css'
+                'css/semantic.min.css'
+                'less/global.less'
+                'less/form.less'
+                'less/table.less'
+            filter='cssrewrite'
+            %}
+            <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
+            {% endstylesheets %}
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        {% block javascripts %}
+            <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+            {% javascripts
+                'js/jquery-ui-1.10.3.custom.min.js'
+                'js/semantic.min.js'
+                'js/form.js'
+                'js/table.js'
+            %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock %}
+    </body>
+</html>

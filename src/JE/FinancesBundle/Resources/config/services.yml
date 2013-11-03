@@ -1,0 +1,23 @@
+parameters:
+#    je_finances.example.class: JE\FinancesBundle\Example
+
+services:
+    form.type.datepicker:
+        class: JE\FinancesBundle\Form\Type\DatepickerType
+        arguments:
+        tags:
+            - { name: form.type, alias: datepicker }
+
+    je.twig.number_format:
+        class: JE\FinancesBundle\Twig\NumberFormat
+        tags:
+            - { name: twig.extension }
+
+    je.twig.date_format:
+        class: JE\FinancesBundle\Twig\DateFormat
+        tags:
+            - { name: twig.extension }
+
+    je.finances.date_helper:
+        class: JE\FinancesBundle\Services\DateHelper
+        arguments: [@doctrine.orm.entity_manager]

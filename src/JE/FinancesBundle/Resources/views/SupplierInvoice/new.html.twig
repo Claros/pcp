@@ -1,0 +1,17 @@
+{% extends '::layout.html.twig' %}
+
+{% block content %}
+
+    <h1 class="ui header">
+        Nouveau FF / RF
+    </h1>
+    <form class="ui green form segment" method="post" novalidate>
+        {{ form_widget(form) }}
+        <button type="submit" class="ui green labeled icon submit button">
+            Créer <i class="plus icon"></i>
+        </button>
+        <a href="{{ path('je_finances_ff') }}" class="ui labeled icon submit button">
+            Annuler <i class="reply mail icon"></i>
+        </a>
+    </form>
+{% endblock %}

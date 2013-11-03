@@ -1,0 +1,25 @@
+{% extends '::layout.html.twig' %}
+
+{% block content %}
+
+    <h1 class="ui header">
+        {{ user }}
+    </h1>
+    <div class="ui two column grid">
+        <div class="column">
+        </div>
+        <div class="column">
+            <div class="ui segment">
+                <h2>Signature</h2>
+                <h3 class="ui ribbon label">Résultat</h3>
+                {% include 'JEUserBundle:User:signature.html.twig' %}
+                <h3 class="ui ribbon label" style="margin-top: 20px;margin-bottom: 20px">Code HTML</h3>
+                <div class="ui form">
+                    <div class="field">
+                        <textarea>{% include 'JEUserBundle:User:signature.html.twig' %}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

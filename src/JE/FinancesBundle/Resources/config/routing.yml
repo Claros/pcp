@@ -1,0 +1,19 @@
+je_finances_treasury:
+    resource: "@JEFinancesBundle/Resources/config/routing_treasury.yml"
+    prefix:   /treasury
+
+je_finances_taxes:
+    resource: "@JEFinancesBundle/Resources/config/routing_taxes.yml"
+    prefix:   /taxes
+
+je_finances_fc:
+    resource: "@JEFinancesBundle/Resources/config/routing_customer_invoice.yml"
+    prefix:   /fc
+
+je_finances_bv:
+    resource: "@JEFinancesBundle/Resources/config/routing_payment_slip.yml"
+    prefix:   /bv
+
+je_finances_ff:
+    resource: "@JEFinancesBundle/Resources/config/routing_supplier_invoice.yml"
+    prefix:   /ff

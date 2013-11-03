@@ -1,0 +1,7 @@
+je_user_users:
+    resource: "@JEUserBundle/Resources/config/routing_user.yml"
+    prefix:   /users
+
+je_user_groups:
+    resource: "@JEUserBundle/Resources/config/routing_group.yml"
+    prefix:   /groups

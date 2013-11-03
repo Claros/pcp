@@ -1,0 +1,17 @@
+{% extends '::layout.html.twig' %}
+
+{% block content %}
+
+    <h1 class="ui header">
+        Editer le BV
+    </h1>
+    <form class="ui blue form segment" method="post" {{ form_enctype(form) }} novalidate>
+        {{ form_widget(form) }}
+        <button type="submit" class="ui blue labeled icon submit button">
+            Editer <i class="pencil icon"></i>
+        </button>
+        <a href="{{ path('je_finances_bv') }}" class="ui labeled icon submit button">
+            Annuler <i class="reply mail icon"></i>
+        </a>
+    </form>
+{% endblock %}

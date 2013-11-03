@@ -1,0 +1,29 @@
+je_finances_fc:
+    pattern:  /{page}/{sort}/{direction}
+    defaults: { _controller: JEFinancesBundle:CustomerInvoice:index, page: 1, sort: i.dueDate, direction: asc }
+    requirements:
+        page: \d+
+        sort: i\.[^/]+
+        direction: asc|desc
+
+je_finances_fc_new:
+    pattern:  /new
+    defaults: { _controller: JEFinancesBundle:CustomerInvoice:new }
+
+je_finances_fc_edit:
+    pattern:  /{fc}/edit
+    defaults: { _controller: JEFinancesBundle:CustomerInvoice:edit }
+    requirements:
+        fc: FC\d+
+
+je_finances_fc_paid:
+    pattern:  /{fc}/paid
+    defaults: { _controller: JEFinancesBundle:CustomerInvoice:paid }
+    requirements:
+        fc: FC\d+
+
+je_finances_fc_unpaid:
+    pattern:  /{fc}/unpaid
+    defaults: { _controller: JEFinancesBundle:CustomerInvoice:unpaid }
+    requirements:
+        fc: FC\d+

@@ -1,0 +1,84 @@
+{% block form_row %}
+    {% spaceless %}
+        <div class="field{% if form.vars.errors|length > 0 %} error{% endif %}">
+            {{ form_label(form) }}
+            <div class="controls">
+                {{ form_widget(form) }}
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            <div class="ui red pointing above ui label">
+                {% for error in errors %}
+                    <p>{{
+                        error.messagePluralization is null
+                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+                        }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block choice_widget_expanded %}
+    {% spaceless %}
+        <div {{ block('widget_container_attributes') }}>
+            {% for group_label, choice in choices %}
+                {% if choice is iterable %}
+                    <div class="ui segment">
+                        <h3 class="ui top attached label">{{ group_label }}</h3>
+                        {% for key in choice|keys %}
+                            <div class="ui checkbox">
+                                {{ form_widget(form.children[key]) }}
+                                {{ form_label(form.children[key]) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="ui checkbox">
+                        {{ form_widget(form.children[group_label]) }}
+                        {{ form_label(form.children[group_label]) }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endspaceless %}
+{% endblock choice_widget_expanded %}
+
+{% block choice_widget_collapsed %}
+    {% spaceless %}
+        <div class="ui {% if "class" in attr|keys %}{{ attr.class }}{% else %}selection{% endif %} dropdown">
+            <input type="hidden" value="{{ value }}" {{ block('widget_attributes') }}>
+            <div class="default text">Choisissez</div>
+            <i class="dropdown icon"></i>
+            <div class="menu ui transition hidden">
+                {% for choice in choices %}
+                    <div class="item{% if choice.value == value %} active{% endif %}" data-value="{{ choice.value }}">{{ choice.label|trans({}, translation_domain) }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock choice_widget_collapsed %}
+
+{% block form_label %}
+    {% spaceless %}
+        {% if label is not sameas(false) %}
+            {% if not compound %}
+                {% set label_attr = label_attr|merge({'for': id}) %}
+            {% endif %}
+            {% if required %}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+            {% endif %}
+            {% if label is empty %}
+                {% set label = name|humanize %}
+            {% endif %}
+            <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain)|raw }}</label>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_label %}
