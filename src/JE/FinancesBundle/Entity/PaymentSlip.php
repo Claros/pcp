@@ -85,6 +85,62 @@ class PaymentSlip
     private $numberOfDays;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="smic", type="integer")
+     * @Assert\NotBlank()
+     */
+    private $smic;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="urssaf_1_1", type="integer")
+     * @Assert\NotBlank()
+     */
+    private $urssaf_1_1;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="urssaf_1_2", type="integer")
+     * @Assert\NotBlank()
+     */
+    private $urssaf_1_2;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="urssaf_2_1", type="integer")
+     * @Assert\NotBlank()
+     */
+    private $urssaf_2_1;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="urssaf_2_2", type="integer")
+     * @Assert\NotBlank()
+     */
+    private $urssaf_2_2;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="urssaf_2_3", type="integer")
+     * @Assert\NotBlank()
+     */
+    private $urssaf_2_3;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="urssaf_2_4", type="integer")
+     * @Assert\NotBlank()
+     */
+    private $urssaf_2_4;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="path", type="string", length=255, nullable=true)
@@ -106,10 +162,25 @@ class PaymentSlip
      */
     private $file;
 
-    public function __construct()
+    public function __construct(Variable $smic = null, Variable $urssaf_1_1 = null, Variable $urssaf_1_2 = null, Variable $urssaf_2_1 = null, Variable $urssaf_2_2 = null, Variable $urssaf_2_3 = null, Variable $urssaf_2_4 = null)
     {
         $this->bv = 'BV';
         $this->createdAt = new \DateTime;
+
+        if($smic !== null)
+            $this->setSmic($smic->getValue());
+        if($urssaf_1_1 !== null)
+            $this->setUrssaf11($urssaf_1_1->getValue());
+        if($urssaf_1_2 !== null)
+            $this->setUrssaf12($urssaf_1_2->getValue());
+        if($urssaf_2_1 !== null)
+            $this->setUrssaf21($urssaf_2_1->getValue());
+        if($urssaf_2_2 !== null)
+            $this->setUrssaf22($urssaf_2_2->getValue());
+        if($urssaf_2_3 !== null)
+            $this->setUrssaf23($urssaf_2_3->getValue());
+        if($urssaf_2_4 !== null)
+            $this->setUrssaf24($urssaf_2_4->getValue());
     }
 
     /**
@@ -262,7 +333,7 @@ class PaymentSlip
 
     public function getUrssaf()
     {
-        return $this->numberOfDays * 4 * 9.43 * 0.156 + $this->getAmount() * 0.024;
+        return $this->numberOfDays * 4 * $this->getSmic() * ($this->getUrssaf21() + $this->getUrssaf22() + $this->getUrssaf23() + $this->getUrssaf24())/100 + $this->getAmount() * ($this->getUrssaf11() + $this->getUrssaf12())/100;
     }
 
     public function getTotalAmount()
@@ -291,6 +362,118 @@ class PaymentSlip
     public function getNumberOfDays()
     {
         return $this->numberOfDays;
+    }
+
+    /**
+     * @param int $smic
+     */
+    public function setSmic($smic)
+    {
+        $this->smic = $this->strToNormalized($smic);
+    }
+
+    /**
+     * @return int
+     */
+    public function getSmic()
+    {
+        return $this->normalizedToFloat($this->smic);
+    }
+
+    /**
+     * @param int $urssaf_1_1
+     */
+    public function setUrssaf11($urssaf_1_1)
+    {
+        $this->urssaf_1_1 = $this->strToNormalized($urssaf_1_1);
+    }
+
+    /**
+     * @return int
+     */
+    public function getUrssaf11()
+    {
+        return $this->normalizedToFloat($this->urssaf_1_1);
+    }
+
+    /**
+     * @param int $urssaf_1_2
+     */
+    public function setUrssaf12($urssaf_1_2)
+    {
+        $this->urssaf_1_2 = $this->strToNormalized($urssaf_1_2);
+    }
+
+    /**
+     * @return int
+     */
+    public function getUrssaf12()
+    {
+        return $this->normalizedToFloat($this->urssaf_1_2);
+    }
+
+    /**
+     * @param int $urssaf_2_1
+     */
+    public function setUrssaf21($urssaf_2_1)
+    {
+        $this->urssaf_2_1 = $this->strToNormalized($urssaf_2_1);
+    }
+
+    /**
+     * @return int
+     */
+    public function getUrssaf21()
+    {
+        return $this->normalizedToFloat($this->urssaf_2_1);
+    }
+
+    /**
+     * @param int $urssaf_2_2
+     */
+    public function setUrssaf22($urssaf_2_2)
+    {
+        $this->urssaf_2_2 = $this->strToNormalized($urssaf_2_2);
+    }
+
+    /**
+     * @return int
+     */
+    public function getUrssaf22()
+    {
+        return $this->normalizedToFloat($this->urssaf_2_2);
+    }
+
+    /**
+     * @param int $urssaf_2_3
+     */
+    public function setUrssaf23($urssaf_2_3)
+    {
+        $this->urssaf_2_3 = $this->strToNormalized($urssaf_2_3);
+    }
+
+    /**
+     * @return int
+     */
+    public function getUrssaf23()
+    {
+        return $this->normalizedToFloat($this->urssaf_2_3);
+    }
+
+    /**
+     * @param int $urssaf_2_4
+     */
+    public function setUrssaf24($urssaf_2_4)
+    {
+        $this->urssaf_2_4 = $this->strToNormalized($urssaf_2_4);
+    }
+
+    /**
+     * @return int
+     */
+    public function getUrssaf24()
+    {
+        return $this->normalizedToFloat($this->urssaf_2_4);
     }
 
     /**

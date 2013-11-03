@@ -23,9 +23,10 @@ class CustomerInvoiceRepository extends EntityRepository
     public function yearRange()
     {
         $qb = $this->createQueryBuilder('i')
-            ->select('MAX(YEAR(i.issuedAt)) maxIssuedAt, MIN(YEAR(i.issuedAt)) minIssuedAt, '.
-                     'MAX(YEAR(i.paidAt)) maxPaidAt, MIN(YEAR(i.paidAt)) minPaidAt, '.
-                     'MAX(YEAR(i.dueDate)) maxDueDate, MIN(YEAR(i.dueDate)) minDueDate');
+            ->select('MAX(YEAR(i.issuedAt)) maxIssuedAt, MIN(YEAR(i.issuedAt)) minIssuedAt')
+            ->addSelect('MAX(YEAR(i.paidAt)) maxPaidAt, MIN(YEAR(i.paidAt)) minPaidAt')
+            ->addSelect('MAX(YEAR(i.dueDate)) maxDueDate, MIN(YEAR(i.dueDate)) minDueDate')
+            ;
 
         $result = $qb->getQuery()->getSingleResult(Query::HYDRATE_ARRAY);
 
@@ -51,7 +52,8 @@ class CustomerInvoiceRepository extends EntityRepository
     public function sumFromMonth($month, $year)
     {
         $qb = $this->createQueryBuilder('i')
-            ->select('SUM(i.amount)/100 amount, SUM(i.amount * i.taxes / 1000000) taxesAmount')
+            ->select('SUM(i.amount)/100 amount')
+            ->addSelect('SUM(i.amount * i.taxes / 1000000) taxesAmount')
             ->where('MONTH(i.paidAt) = :month')
             ->setParameter('month', $month)
             ->andWhere('YEAR(i.paidAt) = :year')
@@ -67,7 +69,10 @@ class CustomerInvoiceRepository extends EntityRepository
     public function sumFromRange(DateRange $range)
     {
         $qb = $this->createQueryBuilder('i')
-            ->select('SUM(i.amount)/100 amount, SUM(i.amount * i.taxes / 1000000) taxesAmount, MONTH(i.paidAt) month, YEAR(i.paidAt) year')
+            ->select('SUM(i.amount)/100 amount')
+            ->addSelect('SUM(i.amount * i.taxes / 1000000) taxesAmount')
+            ->addSelect('MONTH(i.paidAt) month')
+            ->addSelect('YEAR(i.paidAt) year')
             ->where('i.paidAt >= :from')
             ->setParameter('from', $range->getFrom())
             ->andWhere('i.paidAt <= :to')

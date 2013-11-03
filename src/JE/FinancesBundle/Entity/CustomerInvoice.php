@@ -130,13 +130,15 @@ class CustomerInvoice
      */
     private $file;
 
-    public function __construct()
+    public function __construct(Variable $defaultTaxes = null)
     {
         $this->paid = false;
-        $this->setTaxes('19,6 %');
         $this->fc = 'FC';
         $this->issuedAt = new \DateTime;
         $this->dueDate = (new \DateTime)->add(new \DateInterval('P1M'));
+
+        if($defaultTaxes !== null)
+            $this->setTaxes($defaultTaxes->getValue());
     }
 
     /**

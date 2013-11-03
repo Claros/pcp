@@ -54,7 +54,7 @@ class CustomerInvoiceController extends Controller
      */
     public function newAction()
     {
-        $invoice = new CustomerInvoice;
+        $invoice = new CustomerInvoice($this->em->getRepository('JEFinancesBundle:Variable')->findOneBySlug('tva_high'));
 
         return $this->handleForm($invoice);
     }

@@ -17,3 +17,11 @@ je_finances_bv:
 je_finances_ff:
     resource: "@JEFinancesBundle/Resources/config/routing_supplier_invoice.yml"
     prefix:   /ff
+
+je_finances_vars:
+    resource: "@JEFinancesBundle/Resources/config/routing_vars.yml"
+    prefix:   /vars
+
+je_finances_urssaf:
+    resource: "@JEFinancesBundle/Resources/config/routing_urssaf.yml"
+    prefix:   /urssaf

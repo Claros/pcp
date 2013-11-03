@@ -36,6 +36,27 @@ class PaymentSlipType extends AbstractType
             ->add('numberOfDays', 'text', array(
                 'label' => 'Nombre de JEH',
             ))
+            ->add('smic', 'text', array(
+                'label' => 'SMIC horraire',
+            ))
+            ->add('urssaf_1_1', 'text', array(
+                'label' => 'Cotisations base brute',
+            ))
+            ->add('urssaf_1_2', 'text', array(
+                'label' => 'Cotisations base brute',
+            ))
+            ->add('urssaf_2_1', 'text', array(
+                'label' => 'Cotisations base URSSAF',
+            ))
+            ->add('urssaf_2_2', 'text', array(
+                'label' => 'Cotisations base URSSAF',
+            ))
+            ->add('urssaf_2_3', 'text', array(
+                'label' => 'Cotisations base URSSAF',
+            ))
+            ->add('urssaf_2_4', 'text', array(
+                'label' => 'Cotisations base URSSAF',
+            ))
             ->add('file', 'file', array(
                 'label' => 'Fichier',
             ))

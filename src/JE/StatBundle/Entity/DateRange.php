@@ -14,13 +14,21 @@ class DateRange
 
     private $to;
 
-    public function __construct()
+    public function __construct($year = null)
     {
         $this->to = new \DateTime;
         $this->from = new \DateTime;
 
         $this->to->setDate($this->to->format('Y'), $this->to->format('n'), 1)->setTime(23, 59, 59)->add(new \DateInterval('P1M'))->sub(new \DateInterval('P1D'));
         $this->from->setDate($this->to->format('Y'), $this->to->format('n'), 1)->setTime(0, 0)->sub(new \DateInterval('P6M'));
+
+        if($year !== null){
+            $this->setMonthFrom(1);
+            $this->setYearFrom($year);
+
+            $this->setMonthTo(12);
+            $this->setYearTo($year);
+        }
     }
 
     public function getFrom()

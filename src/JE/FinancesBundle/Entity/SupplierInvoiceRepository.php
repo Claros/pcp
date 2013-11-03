@@ -48,7 +48,10 @@ class SupplierInvoiceRepository extends EntityRepository
     public function sumFromMonth($month, $year)
     {
         $qb = $this->createQueryBuilder('i')
-            ->select('SUM(i.totalAmount) totalAmount, SUM(i.taxesHigh) taxesHigh, SUM(i.taxesMedium) taxesMedium, SUM(i.taxesLow) taxesLow')
+            ->select('SUM(i.totalAmount)/100 totalAmount')
+            ->addSelect('SUM(i.taxesHigh)/100 taxesHigh')
+            ->addSelect('SUM(i.taxesMedium)/100 taxesMedium')
+            ->addSelect('SUM(i.taxesLow)/100 taxesLow')
             ->where('MONTH(i.createdAt) = :month')
             ->setParameter('month', $month)
             ->andWhere('YEAR(i.createdAt) = :year')
@@ -58,17 +61,18 @@ class SupplierInvoiceRepository extends EntityRepository
         $result['taxesAmount']  = $result['taxesHigh'] + $result['taxesMedium'] + $result['taxesLow'];
         $result['amount']       = $result['totalAmount'] - $result['taxesAmount'];
 
-        $result = array_map(function($value){
-            return $value / 100;
-        }, $result);
-
         return $result;
     }
 
     public function sumFromRange(DateRange $range)
     {
         $qb = $this->createQueryBuilder('i')
-            ->select('SUM(i.totalAmount)/100 totalAmount, SUM(i.taxesHigh)/100 taxesHigh, SUM(i.taxesMedium)/100 taxesMedium, SUM(i.taxesLow)/100 taxesLow, MONTH(i.createdAt) month, YEAR(i.createdAt) year')
+            ->select('SUM(i.totalAmount)/100 totalAmount')
+            ->addSelect('SUM(i.taxesHigh)/100 taxesHigh')
+            ->addSelect('SUM(i.taxesMedium)/100 taxesMedium')
+            ->addSelect('SUM(i.taxesLow)/100 taxesLow')
+            ->addSelect('MONTH(i.createdAt) month')
+            ->addSelect('YEAR(i.createdAt) year')
             ->where('i.createdAt >= :from')
             ->setParameter('from', $range->getFrom())
             ->andWhere('i.createdAt <= :to')

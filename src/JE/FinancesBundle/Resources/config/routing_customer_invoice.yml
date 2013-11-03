@@ -1,6 +1,6 @@
 je_finances_fc:
     pattern:  /{page}/{sort}/{direction}
-    defaults: { _controller: JEFinancesBundle:CustomerInvoice:index, page: 1, sort: i.dueDate, direction: asc }
+    defaults: { _controller: JEFinancesBundle:CustomerInvoice:index, page: 1, sort: i.dueDate, direction: desc }
     requirements:
         page: \d+
         sort: i\.[^/]+

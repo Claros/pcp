@@ -49,7 +49,9 @@ class PaymentSlipRepository extends EntityRepository
     public function sumFromMonth($month, $year)
     {
         $qb = $this->createQueryBuilder('s')
-            ->select('SUM(s.amount) / 100 amount, SUM(s.numberOfDays * 4 * 9.43 * 0.156 + s.amount / 100 * 0.024) urssaf')
+            ->select('SUM(s.amount) / 100 amount')
+            ->addSelect('SUM(s.numberOfDays * 4 * s.smic/100 * (s.urssaf_2_1 + s.urssaf_2_2 + s.urssaf_2_3 + s.urssaf_2_4)/10000 + s.amount / 100 * (s.urssaf_1_1 + s.urssaf_1_2)/10000) urssaf')
+            ->addSelect('SUM(s.numberOfDays) numberOfDays')
             ->where('MONTH(s.createdAt) = :month')
             ->setParameter('month', $month)
             ->andWhere('YEAR(s.createdAt) = :year')
@@ -64,7 +66,11 @@ class PaymentSlipRepository extends EntityRepository
     public function sumFromRange(DateRange $range)
     {
         $qb = $this->createQueryBuilder('s')
-            ->select('SUM(s.amount) / 100 amount, SUM(s.numberOfDays * 4 * 9.43 * 0.156 + s.amount / 100 * 0.024) urssaf, MONTH(s.createdAt) month, YEAR(s.createdAt) year')
+            ->select('SUM(s.amount) / 100 amount')
+            ->addSelect('SUM(s.numberOfDays * 4 * s.smic/100 * (s.urssaf_2_1 + s.urssaf_2_2 + s.urssaf_2_3 + s.urssaf_2_4)/10000 + s.amount / 100 * (s.urssaf_1_1 + s.urssaf_1_2)/10000) urssaf')
+            ->addSelect('SUM(s.numberOfDays) numberOfDays')
+            ->addSelect('MONTH(s.createdAt) month')
+            ->addSelect('YEAR(s.createdAt) year')
             ->where('s.createdAt >= :from')
             ->setParameter('from', $range->getFrom())
             ->andWhere('s.createdAt <= :to')
@@ -78,6 +84,7 @@ class PaymentSlipRepository extends EntityRepository
                 'amount' => 0,
                 'urssaf' => 0,
                 'totalAmount' => 0,
+                'numberOfDays' => 0,
             );
         },$range->getMonthsArray());
 
@@ -87,6 +94,7 @@ class PaymentSlipRepository extends EntityRepository
                 'amount' => $result['amount'],
                 'urssaf' => $result['urssaf'],
                 'totalAmount' => $result['amount'] - $result['urssaf'],
+                'numberOfDays' => $result['numberOfDays'],
             );
         }
 

@@ -54,7 +54,15 @@ class PaymentSlipController extends Controller
      */
     public function newAction()
     {
-        $slip = new PaymentSlip;
+        $slip = new PaymentSlip(
+            $this->em->getRepository('JEFinancesBundle:Variable')->findOneBySlug('smic'),
+            $this->em->getRepository('JEFinancesBundle:Variable')->findOneBySlug('urssaf_1_1'),
+            $this->em->getRepository('JEFinancesBundle:Variable')->findOneBySlug('urssaf_1_2'),
+            $this->em->getRepository('JEFinancesBundle:Variable')->findOneBySlug('urssaf_2_1'),
+            $this->em->getRepository('JEFinancesBundle:Variable')->findOneBySlug('urssaf_2_2'),
+            $this->em->getRepository('JEFinancesBundle:Variable')->findOneBySlug('urssaf_2_3'),
+            $this->em->getRepository('JEFinancesBundle:Variable')->findOneBySlug('urssaf_2_4')
+        );
 
         return $this->handleForm($slip);
     }
