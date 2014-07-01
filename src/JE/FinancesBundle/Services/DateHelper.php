@@ -20,12 +20,12 @@ class DateHelper
 
     public function getYearRange(array $entities)
     {
-        $max = $min = (new \DateTime())->format('Y');
+        $max = $min = intval((new \DateTime())->format('Y'));
 
         foreach($entities as $entity){
             $range = $this->em->getRepository($entity)->yearRange();
-            $max = max($max, $range['max']);
-            $min = min($min, $range['min']);
+            $max = max(array_filter(array($max, $range['max'])));
+            $min = min(array_filter(array($min, $range['min'])));
         }
 
         return array(
@@ -36,7 +36,7 @@ class DateHelper
 
     public function getDefaultDate($month, $year, array $yearRange)
     {
-        $this->month = $month = $month === null ? (new \DateTime())->format('m') : $month;
+        $this->month = $month = $month === null ? (new \DateTime())->format('n') : $month;
         $this->year = $year = $year === null ? (new \DateTime())->format('Y') : max(min($year, $yearRange['max']), $yearRange['min']);
 
         return array($month, $year);
