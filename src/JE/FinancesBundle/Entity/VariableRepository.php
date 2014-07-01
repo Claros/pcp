@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class VariableRepository extends EntityRepository
 {
+	function findAllVars()
+	{
+		$vars          = $this->findAll();
+		$varsFormatted = array();
+
+		foreach ($vars as $var) {
+			$varsFormatted[$var->getSlug()] = $var->getValue().' '.$var->getUnit();
+		}
+
+		return $varsFormatted;
+	}
 }

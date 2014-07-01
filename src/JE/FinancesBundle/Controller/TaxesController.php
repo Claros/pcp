@@ -35,6 +35,7 @@ class TaxesController extends Controller
         list($month, $year)             = $dateHelper->getDefaultDate($month, $year, $yearRange);
         list($sales, $salesSum)         = $dateHelper->dataFromMonth('JEFinancesBundle:CustomerInvoice');
         list($purchases, $purchasesSum) = $dateHelper->dataFromMonth('JEFinancesBundle:SupplierInvoice');
+        $vars = $this->em->getRepository('JEFinancesBundle:Variable')->findAllVars();
 
         return array(
             'month' => $month,
@@ -44,6 +45,7 @@ class TaxesController extends Controller
             'salesSum' => $salesSum,
             'purchases' => $purchases,
             'purchasesSum' => $purchasesSum,
+            'vars' => $vars,
         );
     }
 }
